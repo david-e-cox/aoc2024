@@ -49,27 +49,18 @@ def checkPredecessors(pairs,pages):
                     return((False,newPages))
     return((True,newPages))
 
-badList=[]
+
 for i in range(0,len(pageList)):
     isValid,newPages = checkPredecessors(pairs,pageList[i])
     if isValid:
         ndx=int(len(pageList[i])/2)
         partA += pageList[i][ndx]
     else:
-        badList.append(i)
-
-        
-# Process failed pages to return valid page ordering list
-for pgNum in badList:
-    # Call checkPredecessors, applying fix for rule voilation.  Continue until all rules are satisfied
-    isValid,newPages = checkPredecessors(pairs,pageList[pgNum])
-    while not isValid:
-        isValid,newPages = checkPredecessors(pairs,newPages)
-
-    # Find center point of re-ordered page list and increment partB
-    ndx=int(len(newPages)/2)
-    partB += newPages[ndx]
-
+        # Continue updainge page order until list is valid
+        while not isValid:
+            isValid,newPages = checkPredecessors(pairs,newPages)
+        ndx=int(len(newPages)/2)
+        partB += newPages[ndx]
     
 print("The answer to Part A is {0:d}".format(partA))
 print("The answer to Part B is {0:d}".format(partB))
