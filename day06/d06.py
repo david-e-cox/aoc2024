@@ -20,7 +20,7 @@ def guardWalk(roomMap,pos):
     done=False
     turn=dict()
     move=dict()
-    history = defaultdict(list)
+    history = defaultdict(set)
     inLoop = False
 
     # dictionary as operations for turn/move
@@ -39,7 +39,7 @@ def guardWalk(roomMap,pos):
 
     # A history keyed by positions in the map, with a list-value for directions the guard walked when at that position
     # This is key to finding the loops, if the guard re-encounters the same postion and direction he is entering a loop
-    history[(pos[0],pos[1])].append(g)
+    history[(pos[0],pos[1])].add(g)
 
     while not done:
         # new postion, if valid
@@ -58,14 +58,14 @@ def guardWalk(roomMap,pos):
             g=turn[g]
             roomMap[pos[0]][pos[1]]=g
             # Apppend path/direction history
-            history[(pos[0],pos[1])].append(g)
+            history[(pos[0],pos[1])].add(g)
         else:
             roomMap[pos[0]][pos[1]]='X'
             if roomMap[P[0]][P[1]]=='.':
                 stepCnt+=1
             roomMap[P[0]][P[1]]=g
             path.append(P)
-            history[(P[0],P[1])].append(g)
+            history[(P[0],P[1])].add(g)
 
             # Update position, keep walking
             pos=P
